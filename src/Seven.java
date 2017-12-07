@@ -138,7 +138,7 @@ public class Seven {
             boolean allEquals = true;
             for(int x = 2; x < arrl.size(); x++){
                 for(int y = 2; y < arrl.size(); y++){
-                    if(get(arrl.get(x), arrlarrl) == (get(arrl.get(y), arrlarrl))){
+                    if(weight(getarrl(arrl.get(x), arrlarrl), arrlarrl) == weight(getarrl(arrl.get(y), arrlarrl), arrlarrl)){
 
                     }
                     else {
@@ -156,6 +156,7 @@ public class Seven {
                 arrlarrl2.remove(arrl);
             }
         }
+/**
         arrlarrl = deepCopy(arrlarrl2);
         System.out.println(arrlarrl2);
         for(ArrayList<String> arrl: arrlarrl){
@@ -167,10 +168,21 @@ public class Seven {
                 }
             }
         }
-System.out.println(arrlarrl2);
-        for(ArrayList<String> str : arrlarrl2){
+ **/
+         arrlarrl = s.parse();
+        for(ArrayList<String> arrl3 : arrlarrl2) {
 
+            System.out.println(arrl3);
+            System.out.println(weight(arrl3, arrlarrl));
+            int total = 0;
+            for (int x = 2; x < arrl3.size(); x++) {
+                System.out.println(weight(getarrl(arrl3.get(x), arrlarrl), arrlarrl));
+                total += (weight(getarrl(arrl3.get(x), arrlarrl), arrlarrl));
+            }
+
+            System.out.println(total);
         }
+        System.out.println((getarrl("aobgmc", arrlarrl)));
     }
     public static void remove(String s, ArrayList<ArrayList<String>> arrlarrl, ArrayList<ArrayList<String>> arrlarrl2){
         for(ArrayList<String> strs : arrlarrl){
@@ -189,6 +201,16 @@ System.out.println(arrlarrl2);
         }
         System.out.println(s);
         return -1;
+    }
+
+    public static ArrayList<String> getarrl(String s, ArrayList<ArrayList<String>> arrlarrl){
+        for(ArrayList<String> strs : arrlarrl) {
+            if (strs.get(1).equals(s)) {
+                return strs;
+            }
+        }
+        System.out.println(s);
+        return null;
     }
 
     public static ArrayList<ArrayList<String>> deepCopy(ArrayList<ArrayList<String>> old){
@@ -211,5 +233,13 @@ System.out.println(arrlarrl2);
         }
         System.out.println(s);
         return false;
+    }
+    public static int weight(ArrayList<String> strarrl, ArrayList<ArrayList<String>> arrlarrl){
+
+        int total = Integer.parseInt(strarrl.get(0));
+        for(int x = 2; x < strarrl.size(); x++){
+            total += weight(getarrl(strarrl.get(x), arrlarrl), arrlarrl);
+        }
+        return total;
     }
 }
