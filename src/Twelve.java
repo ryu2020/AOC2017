@@ -6,6 +6,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Twelve {
+
+    public static ArrayList<Integer> dict = new ArrayList<>();
     public static ArrayList<ArrayList<Integer>> parse() {
         ArrayList<ArrayList<Integer>> arrl = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader("inputtwelve.txt"))) {
@@ -28,15 +30,14 @@ public class Twelve {
     }
     public static void main(String[] aaa){
         ArrayList<ArrayList<Integer>> arrl = parse();
-        ArrayList<Integer> vals = new ArrayList<>();
         for(int x = 0; x < 2000; x++){
-            vals.add(x);
+            dict.add(x);
         }
-        remove(arrl, vals, 0, -1);
-        System.out.println(vals.size());
+        remove(arrl, 0, -1);
+        System.out.println(dict.size());
 
     }
-    public static void remove(ArrayList<ArrayList<Integer>> vals, ArrayList<Integer> dict, int index, int last){
+    public static void remove(ArrayList<ArrayList<Integer>> vals, int index, int last){
         System.out.println("AAAAAAAAAAAAAAAAA   " + index + vals.get(index));
 
         if(vals.get(index).size() == 1){
@@ -46,21 +47,15 @@ public class Twelve {
             System.out.println(dict);
         }
         else {
-            ArrayList<Integer> arr= new ArrayList<>();
-            ArrayList<Integer> arr2= makeDeepCopyInteger(vals.get(index));
-            for(int i: arr2){
-                if(i != last){
-                    arr.add(new Integer(i));
-                }
-            }
+            dict.remove(new Integer(last));
+            ArrayList<Integer> arr = vals.get(index);
+            arr.remove(new Integer(last));
             System.out.println(last);
             System.out.println(arr);
             vals.set(index, arr);
             for (int i : arr) {
-                    remove(vals, dict, i, index);
-                    if(i < dict.size()) {
-                        dict.remove(new Integer(i));
-                    }
+                    remove(vals, i, index);
+                dict.remove(new Integer(i));
             }
                 dict.remove(new Integer(index));
 
