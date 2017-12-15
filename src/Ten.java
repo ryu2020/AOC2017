@@ -2,12 +2,12 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 public class Ten {
-    public static void main(String[] AAAAAA){
+    public static String knotHash(String str){
         ArrayList<Integer> vals = new ArrayList<>();
         for(int x = 0; x < 256; x++){
             vals.add(x);
         }
-        String toHash = "206,63,255,131,65,80,238,157,254,24,133,2,16,0,1,3";
+        String toHash = str;
         ArrayList<Integer> ints = new ArrayList<>();
         for(int x = 0; x < toHash.length(); x++){
             ints.add((int) toHash.charAt(x));
@@ -43,9 +43,13 @@ public class Ten {
         }
         String out = "";
         for(int x : denseHashArr){
-            out += Integer.toHexString(x);
+            String hex = Integer.toHexString(x);
+            while(hex.length() < 2){
+                hex = "0" + hex;
+            }
+            out += hex;
         }
-        System.out.println(out);
+        return out;
     }
     public static void reverse(ArrayList<Integer> arrl, int start, int length){
         Stack<Integer> stack = new Stack<>();
