@@ -9,6 +9,18 @@ public class Eighteen {
     int index;
     LinkedList<Long> ll;
     ArrayList<String[]> strs;
+    LinkedList<Long> inBuffer;
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    int status;
+    static final int WAIT = 1;
+    static final int RUN = 0;
 
     public Eighteen(){
         reg = new HashMap<>();
@@ -38,10 +50,11 @@ public class Eighteen {
         reg.put("x", new Long(0));
         reg.put("y", new Long(0));
         reg.put("z", new Long(0));
-        lastsnd = new Long(-1);
-        ll = new LinkedList<>();
+        //lastsnd = new Long(-1);
+        //ll = new LinkedList<>();
         index = 0;
         strs = parse();
+        inBuffer = new LinkedList<>();
     }
 
     void set(String r, String str){
@@ -85,7 +98,7 @@ public class Eighteen {
         }
     }
 
-    void snd(String str) {
+    String snd(String str) {
         try{
             Long i = Long.parseLong(str);
             lastsnd = i;
@@ -93,14 +106,15 @@ public class Eighteen {
         catch(NumberFormatException e){
             lastsnd = reg.get(str);
         }
+        return String.valueOf(lastsnd);
     }
 
     boolean rcv(String str){
-        if(ll.isEmpty()){
+        if(inBuffer.isEmpty()){
             return false;
         }
         else{
-            reg.put(str, ll.pollLast());
+            reg.put(str, inBuffer.pollLast());
             return true;
         }
     }
@@ -148,28 +162,47 @@ public class Eighteen {
         return arrl;
     }
 
-    String step(){
+    void put(Long l){
+        inBuffer.addFirst(l);
+    }
 
+    String step(){
+        if(index == strs.size()){
+            return "check";
+        }
             //System.out.println(reg);
             if(strs.get(index)[0].equals("add")){
                 add(strs.get(index)[1], strs.get(index)[2]);
+                index++;
             }
             else if(strs.get(index)[0].equals("mod")){
                 mod(strs.get(index)[1], strs.get(index)[2]);
+                index++;
             }
             else if(strs.get(index)[0].equals("mul")){
                 mul(strs.get(index)[1], strs.get(index)[2]);
+                index++;
             }
             else if(strs.get(index)[0].equals("set")){
                 set(strs.get(index)[1], strs.get(index)[2]);
+                index++;
             }
             else if(strs.get(index)[0].equals("snd")){
-                return (strs.get(index)[1]);
+
+                System.out.println(Arrays.toString(strs.get(index)));
+                index++;
+                return (snd(strs.get(index)[1]));
+
             }
             else if(strs.get(index)[0].equals("rcv")){
                 //return rcv(strs.get(index)[1]);
+                System.out.println(inBuffer);
+                System.out.println(Arrays.toString(strs.get(index)));
                 if(rcv(strs.get(index)[1])){
-
+                    index++;
+                }
+                else{
+                    return "check";
                 }
             }
             else if(strs.get(index)[0].equals("jgz")){
@@ -182,8 +215,30 @@ public class Eighteen {
     }
 
     public static void main(String[] a){
-        Eighteen et = new Eighteen();
-        //System.out.println(et.run());
+        Eighteen et1 = new Eighteen();
+        Eighteen et2 = new Eighteen();
+
+        int count = 0;
+        boolean finishedOrDeadlock = false;
+        while(!finishedOrDeadlock){
+            System.out.println("0:");
+            String str = et1.step();
+            System.out.println("1:");
+            String str2 = et2.step();
+            if(str.equals("check") && str2.equals("check")){
+                finishedOrDeadlock = true;
+            }
+            else {
+                if (!(str.equals("none") || str.equals("check"))) {
+                    et2.put(Long.parseLong(str));
+                }
+                if (!(str2.equals("none") || str2.equals("check"))) {
+                    et1.put(Long.parseLong(str2));
+                    count++;
+                }
+            }
+        }
+        System.out.println(count);
     }
 
 }

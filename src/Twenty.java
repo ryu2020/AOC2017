@@ -45,6 +45,8 @@ public class Twenty {
     public static void main(String[] a){
 
         particles = parse();
+
+        //I'm not proud of this one
         while(true){
             iterate();
             System.out.println(particles.size());
@@ -86,7 +88,7 @@ public class Twenty {
         HashSet<ArrayList<Integer>> posSet = new HashSet<>();
         ArrayList<ArrayList<ArrayList<Integer>>> deepCopy = new ArrayList<>();
 
-        //I'm not proud of this one
+        //Nor am i proud of this one
         for(ArrayList<ArrayList<Integer>> arrl : particles){
             boolean bool = true;
             for(ArrayList<ArrayList<Integer>> arrl2 : particles){
