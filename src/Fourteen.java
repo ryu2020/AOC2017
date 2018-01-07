@@ -10,12 +10,24 @@ public class Fourteen {
             System.out.println(str);
             String hash = Ten.knotHash(str);
             System.out.println(hash);
-            System.out.println(hash.length());
-            int count = 0;
-            for(char c: hash.toCharArray()){
+            //System.out.println(hash.length());
+            String bin = "";
+            for(char c: hash.toCharArray()) {
+                String st = Long.toBinaryString(Long.parseLong(Character.toString(c), 16));
+                while(st.length() != 4){
+                    st = "0" + st;
+                }
+                bin += st;
+            }
 
+
+            for(char c: bin.toCharArray()){
+
+                //System.out.println(bin.length());
                 //System.out.println(c);
-                for(char d: Integer.toBinaryString(Integer.parseInt(Character.toString(c), 16)).toCharArray()) {
+                //System.out.println(bin);
+                int count = 0;
+                for(char d: bin.toCharArray()) {
                     //System.out.println(d);
                     total += Integer.parseInt(Character.toString(d));
                     arr[x][count] =  Integer.parseInt(Character.toString(d));
@@ -34,8 +46,9 @@ public class Fourteen {
         for(int x = 0;  x < 128; x++){
             for(int y = 0; y < 128; y++){
 
-                    if(eval(arr, x, y))
+                    if(eval(arr, x, y)) {
                         count++;
+                    }
                     /**
                     for (int[] row : arr)
                     {
@@ -62,13 +75,15 @@ public class Fourteen {
         if(arr[r][c] == 0){
             return false;
         }
-        if(arr[r][c] == 1){
+        if(arr[r][c] == 1) {
             arr[r][c] = 0;
             eval(arr, r - 1, c);
             eval(arr, r + 1, c);
             eval(arr, r, c - 1);
             eval(arr, r, c + 1);
+
         }
+
         return true;
     }
 }
