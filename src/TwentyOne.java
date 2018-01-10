@@ -185,9 +185,9 @@ public class TwentyOne {
             matched = false;
             for (int y = 0; y < 4; y++) {
                 if (dict2.containsKey(new Stupid(arr2))) {
-                    System.out.println("match found");
-                    print(arr2);
-                    print(dict2.get(new Stupid(arr2)).getArr());
+                    //System.out.println("match found");
+                    //print(arr2);
+                    //print(dict2.get(new Stupid(arr2)).getArr());
                     arrl.set(x, dict2.get(new Stupid(arr2)).getArr());
                     matched = true;
                     break;
@@ -200,9 +200,9 @@ public class TwentyOne {
             arr2 = flip(arr2);
             for (int y = 0; y < 4; y++) {
                 if (dict2.containsKey(new Stupid(arr2))) {
-                    System.out.println("match found");
-                    print(arr2);
-                    print(dict2.get(new Stupid(arr2)).getArr());
+                    //System.out.println("match found");
+                   // print(arr2);
+                    //print(dict2.get(new Stupid(arr2)).getArr());
                     arrl.set(x, dict2.get(new Stupid(arr2)).getArr());
                     break;
                 }
@@ -222,9 +222,9 @@ public class TwentyOne {
             for (int y = 0; y < 4; y++) {
 
                 if (dict3.containsKey(new Stupid(arr2))) {
-                    System.out.println("match found");
-                    print(arr2);
-                    print(dict3.get(new Stupid(arr2)).getArr());
+                    //System.out.println("match found");
+                    //print(arr2);
+                    //print(dict3.get(new Stupid(arr2)).getArr());
                     arrl.set(x, dict3.get(new Stupid(arr2)).getArr());
                     matched = true;
                     break;
@@ -239,9 +239,9 @@ public class TwentyOne {
             for (int y = 0; y < 4; y++) {
 
                 if (dict3.containsKey(new Stupid(arr2))) {
-                    System.out.println("match found");
-                    print(arr2);
-                    print(dict3.get(new Stupid(arr2)).getArr());
+                    //System.out.println("match found");
+                    //print(arr2);
+                    //print(dict3.get(new Stupid(arr2)).getArr());
                     arrl.set(x, (dict3.get(new Stupid(arr2)).getArr()));
                     break;
                 }
@@ -297,7 +297,7 @@ public class TwentyOne {
 
     public static void main(String[] a){
         TwentyOne to = new TwentyOne();
-        for(int x = 0; x < 5; x++){
+        for(int x = 0; x < 18; x++){
             System.out.println("side = " + to.side());
             if(to.side() % 2 == 0){
                 to.iterate2();
@@ -306,7 +306,7 @@ public class TwentyOne {
                 to.iterate3();
             }
 
-            to.print();
+            //to.print();
         }
         //to.iterate2();
       System.out.println(to.sum());

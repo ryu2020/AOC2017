@@ -12,7 +12,7 @@ public class TwentyTwo {
     final static int DIRECTION_LEFT = 3;
 
     int direction = DIRECTION_UP;
-    HashSet<Integer[]> pointSet;
+    HashSet<Stupid22> pointSet;
     Integer[] current = {0, 0};
 
     int count = 0;
@@ -23,17 +23,20 @@ public class TwentyTwo {
 
         try (BufferedReader br = new BufferedReader(new FileReader("inputtwentytwo.txt"))) {
             String line;
-            Integer[] arr = {-12, -12};
+            Integer[] arr = {-12, 12};
             while ((line = br.readLine()) != null) {
 
 
-                arr[1] = -12;
+                arr[1] = 12;
                 for(String str: line.split("")){
-                    Short bool;
-                    if(str.equals("#"))
-                    pointSet.add(arr);
 
-                    arr[1]++;
+                    Short bool;
+                    if(str.equals("#")) {
+                        //System.out.println(arr[0] + ", " + arr[1]);
+                        Integer[] arrr = {arr[0], arr[1]};
+                        pointSet.add(new Stupid22(arrr));
+                    }
+                    arr[1]--;
                 }
                 arr[0]++;
             }
@@ -41,19 +44,21 @@ public class TwentyTwo {
             System.out.println("debug");
         }
         for(Object ar: pointSet.toArray()){
-            System.out.println(ar.toString());
+            //System.out.println(ar.toString());
         }
     }
 
     void step(){
-        if(pointSet.contains(current)){
-            pointSet.remove(current);
-            direction = turn(DIRECTION_LEFT);
+        System.out.println("current: " + Arrays.toString(current));
+        if(pointSet.contains(new Stupid22(current))){
+            System.out.println("found match " + Arrays.toString(current));
+            pointSet.remove(new Stupid22(current));
+            direction = turn(DIRECTION_RIGHT);
             move();
         }
         else{
-            pointSet.add(current);
-            direction = turn(DIRECTION_RIGHT);
+            pointSet.add(new Stupid22(current));
+            direction = turn(DIRECTION_LEFT);
             move();
             count++;
         }
@@ -61,17 +66,19 @@ public class TwentyTwo {
 
     int turn(int i){
         if(i == DIRECTION_LEFT) {
-            return direction - 1 % 4;
+            return (direction + 3) % 4;
         }
         if(i == DIRECTION_RIGHT){
-            return direction + 1 % 4;
+            return (direction + 1) % 4;
         }
         System.err.println("AAAAAAAAAAAAAAAAAAAAAAAA");
         return -1;
     }
 
     void move(){
+        System.out.println("moving " + direction);
         if(direction == DIRECTION_UP)
+
             current[1]++;
         else if(direction == DIRECTION_DOWN)
             current[1]--;
