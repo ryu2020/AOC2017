@@ -24,12 +24,15 @@ class Stupid22{
 
     @Override
     public int hashCode(){
-        int ret = 0;
+        /**
+        int ret = 1;
             for(Integer i : arr){
-                ret = ret ^ i.hashCode();
+                ret = (int) Math.pow(ret, i);
             }
-
+        ret = Integer.hashCode(ret);
         return ret;
+         **/
+        return Arrays.hashCode(arr);
     }
 
     public Integer[] getArr(){

@@ -27,7 +27,7 @@ public class TwentyTwo {
             while ((line = br.readLine()) != null) {
 
 
-                arr[1] = 12;
+                arr[0] = -12;
                 for(String str: line.split("")){
 
                     Short bool;
@@ -36,9 +36,9 @@ public class TwentyTwo {
                         Integer[] arrr = {arr[0], arr[1]};
                         pointSet.add(new Stupid22(arrr));
                     }
-                    arr[1]--;
+                    arr[0]++;
                 }
-                arr[0]++;
+                arr[1]--;
             }
         } catch (IOException e) {
             System.out.println("debug");
@@ -49,19 +49,30 @@ public class TwentyTwo {
     }
 
     void step(){
-        System.out.println("current: " + Arrays.toString(current));
-        if(pointSet.contains(new Stupid22(current))){
-            System.out.println("found match " + Arrays.toString(current));
-            pointSet.remove(new Stupid22(current));
+        //System.out.println("current: " + Arrays.toString(current) + ", " + direction);
+
+        Stupid22 s22 = new Stupid22(current);
+        if(pointSet.contains(s22)){
+            //System.out.println("found match " + Arrays.toString(current));
+            pointSet.remove(s22);
+            if(pointSet.contains(s22)){
+                pointSet.remove(s22);
+                System.err.println("BAD JOB REMOVING");
+                System.out.println(s22);
+            }
             direction = turn(DIRECTION_RIGHT);
-            move();
+
         }
         else{
             pointSet.add(new Stupid22(current));
+            if(!pointSet.contains(new Stupid22(current))){
+                System.err.println("BAD JOB ADDING");
+            }
             direction = turn(DIRECTION_LEFT);
-            move();
+
             count++;
         }
+        move();
     }
 
     int turn(int i){
@@ -76,7 +87,7 @@ public class TwentyTwo {
     }
 
     void move(){
-        System.out.println("moving " + direction);
+        //System.out.println("moving " + direction);
         if(direction == DIRECTION_UP)
 
             current[1]++;
