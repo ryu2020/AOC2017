@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-public class Eighteen {
+public class TwentyThree {
     HashMap<String, Long> reg;
     Long lastsnd;
     int index;
@@ -23,9 +23,9 @@ public class Eighteen {
     static final int WAIT = 1;
     static final int RUN = 0;
 
-    public Eighteen(Long l){
+    public TwentyThree(){
         reg = new HashMap<>();
-        reg.put("a", new Long(0));
+        reg.put("a", new Long(1));
         reg.put("b", new Long(0));
         reg.put("c", new Long(0));
         reg.put("d", new Long(0));
@@ -33,24 +33,7 @@ public class Eighteen {
         reg.put("f", new Long(0));
         reg.put("g", new Long(0));
         reg.put("h", new Long(0));
-        reg.put("i", new Long(0));
-        reg.put("j", new Long(0));
-        reg.put("k", new Long(0));
-        reg.put("l", new Long(0));
-        reg.put("m", new Long(0));
-        reg.put("n", new Long(0));
-        reg.put("o", new Long(0));
-        reg.put("p", l);
-        reg.put("q", new Long(0));
-        reg.put("r", new Long(0));
-        reg.put("s", new Long(0));
-        reg.put("t", new Long(0));
-        reg.put("u", new Long(0));
-        reg.put("v", new Long(0));
-        reg.put("w", new Long(0));
-        reg.put("x", new Long(0));
-        reg.put("y", new Long(0));
-        reg.put("z", new Long(0));
+
         //lastsnd = new Long(-1);
         //ll = new LinkedList<>();
         index = 0;
@@ -73,10 +56,10 @@ public class Eighteen {
         try{
             Long i = Long.parseLong(str);
             //System.out.println(i);
-            reg.put(r, reg.get(r) + i);
+            reg.put(r, reg.get(r) - i);
         }
         catch(NumberFormatException e){
-            reg.put(r, reg.get(r) + reg.get(str));
+            reg.put(r, reg.get(r) - reg.get(str));
         }
     }
 
@@ -101,7 +84,7 @@ public class Eighteen {
     }
 
     String snd(String str) {
-        count++;
+        //count++;
         System.out.println(str);
         try{
             Long i = Long.parseLong(str);
@@ -124,10 +107,11 @@ public class Eighteen {
         }
     }
 
-    void jgz(String r, String str){
+    void jnz(String r, String str){
         try{
             Long i = Long.parseLong(str);
-            if(i > 0){
+            System.out.println("angery debug");
+            if(i != 0){
                 try{
                     index += Long.parseLong(r);
                 }
@@ -136,11 +120,13 @@ public class Eighteen {
                 }
             }
             else{
+
                 index++;
             }
         }
         catch(NumberFormatException e){
-            if(reg.get(str) > 0){
+            System.out.println(reg.get(str));
+            if(reg.get(str) != 0){
                 try{
                     index += Long.parseLong(r);
                 }
@@ -149,14 +135,17 @@ public class Eighteen {
                 }
             }
             else{
+                System.out.println("debug");
                 index++;
             }
         }
     }
 
+
+
     ArrayList<String[]> parse(){
         ArrayList<String[]> arrl = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader("inputeighteen.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("inputtwentythree.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 arrl.add(line.split(" "));
@@ -180,68 +169,70 @@ public class Eighteen {
             return "check";
         }
 
-            //System.out.println(reg);
-            if(strs.get(index)[0].equals("add")){
-                add(strs.get(index)[1], strs.get(index)[2]);
-                index++;
-            }
-            else if(strs.get(index)[0].equals("mod")){
-                mod(strs.get(index)[1], strs.get(index)[2]);
-                index++;
-            }
-            else if(strs.get(index)[0].equals("mul")){
-                mul(strs.get(index)[1], strs.get(index)[2]);
-                index++;
-            }
-            else if(strs.get(index)[0].equals("set")){
-                set(strs.get(index)[1], strs.get(index)[2]);
-                index++;
-            }
-            else if(strs.get(index)[0].equals("snd")){
+        //System.out.println(reg);
+        if(strs.get(index)[0].equals("sub")){
+            add(strs.get(index)[1], strs.get(index)[2]);
+            index++;
+        }
+        else if(strs.get(index)[0].equals("mod")){
+            mod(strs.get(index)[1], strs.get(index)[2]);
+            index++;
+        }
+        else if(strs.get(index)[0].equals("mul")){
+            mul(strs.get(index)[1], strs.get(index)[2]);
+            index++;
+            count++;
+        }
+        else if(strs.get(index)[0].equals("set")){
+            set(strs.get(index)[1], strs.get(index)[2]);
+            index++;
+        }
+        else if(strs.get(index)[0].equals("snd")){
 
-                //System.out.println(Arrays.toString(strs.get(index)));
+            //System.out.println(Arrays.toString(strs.get(index)));
 
-                System.out.println("sending " + snd(snd(strs.get(index)[1])));
-                String ret = (snd(strs.get(index)[1]));
+            System.out.println("sending " + snd(snd(strs.get(index)[1])));
+            String ret = (snd(strs.get(index)[1]));
+            index++;
+            return ret;
+
+        }
+        else if(strs.get(index)[0].equals("rcv")){
+            //return rcv(strs.get(index)[1]);
+            System.out.println(inBuffer);
+            System.out.println(Arrays.toString(strs.get(index)));
+            if(rcv(strs.get(index)[1])){
                 index++;
-                return ret;
+            }
+            else{
+                return "check";
+            }
+        }
+        else if(strs.get(index)[0].equals("jnz")){
+            jnz(strs.get(index)[2], strs.get(index)[1]);
+        }
 
-            }
-            else if(strs.get(index)[0].equals("rcv")){
-                //return rcv(strs.get(index)[1]);
-                System.out.println(inBuffer);
-                System.out.println(Arrays.toString(strs.get(index)));
-                if(rcv(strs.get(index)[1])){
-                    index++;
-                }
-                else{
-                    return "check";
-                }
-            }
-            else if(strs.get(index)[0].equals("jgz")){
-                jgz(strs.get(index)[2], strs.get(index)[1]);
-            }
-
-            System.out.println(reg);
+        System.out.println(reg);
 
         return "none";
     }
 
     public static void main(String[] a){
+        /**
         Eighteen et1 = new Eighteen(new Long(0));
         Eighteen et2 = new Eighteen(new Long(1));
 
         int count = 0;
         boolean finishedOrDeadlock = false;
         while(!finishedOrDeadlock){
-            /**
-            try {
-                Thread.sleep(60);
-            }
-            catch(InterruptedException e){
-                System.exit(1);
-            }
-             **/
+
+             try {
+             Thread.sleep(60);
+             }
+             catch(InterruptedException e){
+             System.exit(1);
+             }
+
             System.out.println("0:");
             String str = et1.step();
             System.out.println("1:");
@@ -259,7 +250,12 @@ public class Eighteen {
                 }
             }
         }
-        System.out.println(et2.count);
+        **/
+        TwentyThree tt = new TwentyThree();
+        while(tt.index < 32){
+            tt.step();
+        }
+        System.out.println(tt.count);
 
 
     }

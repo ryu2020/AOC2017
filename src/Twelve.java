@@ -31,15 +31,17 @@ public class Twelve {
     }
     public static void main(String[] aaa){
         ArrayList<ArrayList<Integer>> arrl = parse();
-        for(int x = 0; x < 2000; x++){
-            dict.add(x);
-        }
         int count = 0;
+        /**
         while(!isAllNull()){
             count++;
             int x = eval(arrl, firstNotNull());
             System.out.println(dict);
             System.out.println(x);
+        }
+         **/
+        while(!removeGroup(arrl).isEmpty()){
+            count++;
         }
         System.out.println(dict);
         System.out.println(count);
@@ -112,6 +114,26 @@ public class Twelve {
             total += eval(vals, arr.get(x));
         }
         return total + 1;
+    }
+
+    public static ArrayList<ArrayList<Integer>> removeGroup(ArrayList<ArrayList<Integer>> arrl){
+        if(arrl.get(0).isEmpty()){
+            ArrayList<ArrayList<Integer>> ret = new ArrayList<>();
+            for(int i = 1; i < arrl.size(); i++){
+                ret.add(arrl.get(i));
+            }
+            return ret;
+        }
+        else{
+            int remove = arrl.get(0).remove(0);
+            ArrayList<ArrayList<Integer>> ret = new ArrayList<>();
+            for(int i = 0; i < arrl.size(); i++){
+                if(i != remove){
+                    ret.add(arrl.get(i));
+                }
+            }
+            return removeGroup(ret);
+        }
     }
 
     public static ArrayList<Integer> makeDeepCopyInteger(ArrayList<Integer> old){

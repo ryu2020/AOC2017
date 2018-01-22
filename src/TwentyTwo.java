@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,14 +13,20 @@ public class TwentyTwo {
     final static int DIRECTION_LEFT = 3;
 
     int direction = DIRECTION_UP;
-    HashSet<Stupid22> pointSet;
+    HashSet<Point> infectedSet;
+    HashSet<Point> cleanSet;
+    HashSet<Point> weakenedSet;
+    HashSet<Point> flaggedSet;
     Integer[] current = {0, 0};
 
     int count = 0;
 
     public TwentyTwo(){
 
-        pointSet = new HashSet<>();
+        cleanSet = new HashSet<>();
+        infectedSet = new HashSet<>();
+        weakenedSet = new HashSet<>();
+        flaggedSet = new HashSet<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader("inputtwentytwo.txt"))) {
             String line;
@@ -32,9 +39,11 @@ public class TwentyTwo {
 
                     Short bool;
                     if(str.equals("#")) {
-                        //System.out.println(arr[0] + ", " + arr[1]);
-                        Integer[] arrr = {arr[0], arr[1]};
-                        pointSet.add(new Stupid22(arrr));
+
+                        infectedSet.add(new Point(arr[0], arr[1]));
+                    }
+                    else{
+                        cleanSet.add(new Point(arr[0], arr[1]));
                     }
                     arr[0]++;
                 }
@@ -43,35 +52,36 @@ public class TwentyTwo {
         } catch (IOException e) {
             System.out.println("debug");
         }
-        for(Object ar: pointSet.toArray()){
-            //System.out.println(ar.toString());
-        }
+
     }
 
     void step(){
         //System.out.println("current: " + Arrays.toString(current) + ", " + direction);
 
-        Stupid22 s22 = new Stupid22(current);
-        if(pointSet.contains(s22)){
+        Point point = new Point(current[0], current[1]);
+        if(infectedSet.contains(point)){
             //System.out.println("found match " + Arrays.toString(current));
-            pointSet.remove(s22);
-            if(pointSet.contains(s22)){
-                pointSet.remove(s22);
-                System.err.println("BAD JOB REMOVING");
-                System.out.println(s22);
-            }
+            infectedSet.remove(point);
+            flaggedSet.add(point);
             direction = turn(DIRECTION_RIGHT);
-
         }
-        else{
-            pointSet.add(new Stupid22(current));
-            if(!pointSet.contains(new Stupid22(current))){
-                System.err.println("BAD JOB ADDING");
-            }
-            direction = turn(DIRECTION_LEFT);
-
+        else if(weakenedSet.contains(point)){
+            weakenedSet.remove(point);
+            infectedSet.add(point);
             count++;
         }
+        else if(flaggedSet.contains(point)){
+            flaggedSet.remove(point);
+            cleanSet.add(point);
+            direction = turn(DIRECTION_LEFT);
+            direction = turn(DIRECTION_LEFT);
+        }
+        else{
+            cleanSet.remove(point);
+            weakenedSet.add(point);
+            direction = turn(DIRECTION_LEFT);
+        }
+
         move();
     }
 
@@ -105,9 +115,13 @@ public class TwentyTwo {
 
     public static void main(String[] aaa){
         TwentyTwo tt = new TwentyTwo();
-        for(int x = 0; x < 10000; x++){
+        for(int x = 0; x < 10000000; x++){
             tt.step();
         }
         System.out.println(tt.getCount());
+    }
+
+    private enum state{
+        CLEAN, WEAKENED, INFECTED, FLAGGED
     }
 }
